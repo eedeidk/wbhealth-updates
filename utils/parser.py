@@ -92,8 +92,8 @@ class OptionalParser:
 		df = self.df
 		df['Date']=pd.to_datetime(df['Date'], format='%d/%m/%Y')
 		df['is_today'] = df['Date'] == date.today()
-		self.df = df.query('is_today == True')
+		self.newdf = df.query('is_today == True')
 	
 	def main(self):
 		self.date_present()
-		return self.df
+		return self.newdf
