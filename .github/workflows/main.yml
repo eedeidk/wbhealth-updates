@@ -8,7 +8,7 @@ jobs:
   run_app:
     runs-on: ubuntu-latest
 
-    # steps:
+    steps:
     # - name: Get secret
     #   run: |
     #     echo "TG_API_HASH: ${{ secrets.TG_API_HASH }}"
