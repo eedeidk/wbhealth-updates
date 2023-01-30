@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import requests, time, re
 import pandas as pd
+from datetime import date
 
 class Parser:
 	''''Parser object and functions'''
@@ -62,7 +63,7 @@ class Parser:
 		
 
 		#check
-		df1['Links'] = links
+		df1['Link'] = links
 		# print(df1.columns)
 		# print(df1.iloc[2].values)
 
@@ -80,3 +81,19 @@ class Parser:
 				self.page_souper()
 				self.table_parse()
 				return self.df
+
+class OptionalParser:
+	'''Parser according to URL'''
+	def __init__(self, urlno, df) -> None:
+		self.urltype = urlno
+		self.df = df
+	
+	def date_present(self):
+		df = self.df
+		df['Date']=pd.to_datetime(df['Date'], format='%d/%m/%Y')
+		df['is_today'] = df['Date'] == date.today()
+		self.df = df.query('is_today == True')
+	
+	def main(self):
+		self.date_present()
+		return self.df
