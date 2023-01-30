@@ -36,29 +36,35 @@ class tgsend:
 		
 	def pdf_downloader(self, link):
 		'''Downloads the PDF'''
-		response = get(link, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'})
+		r = get(link, stream=True,
+			headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'})
 		with tempfile.NamedTemporaryFile(delete=False) as f:
-			f.write(response.content)
+			f.write(r.content)
 			f.seek(0)
 			return f.name
-		
+		# with open('tempxyz.file', 'wb') as f:
+		# 	for chunk in r.iter_content(chunk_size=8192): 
+		# 		# If you have chunk encoded response uncomment if
+		# 		# and set chunk_size parameter to None.
+		# 		#if chunk: 
+		# 		f.write(chunk)
 
-	async def main(self):
+	def main(self):
 		'''Main message sender'''
-		await self.app.start()
-		for i in self.df.index:
-			# print('caption create')
-			caption, link, fname = self.create_caption(self.df.iloc[i])
-			# print(caption)
-			#download the pdf
-			fpath = self.pdf_downloader(link)
-			# print('Downloaded')
-			#send the pdf + add thumb
-			cid = os.environ.get('TG_CHANNEL_ID')
-			# print(cid, type(cid))
-			await self.app.send_document(chat_id=int(cid), document=fpath, file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
-			# await self.app.send_message(chat_id=int(cid), text=caption)
-			os.remove(fpath)
-			print(i, '/', self.df.shape[0])
-			time.sleep(5)
-		await self.app.stop()
+		with self.app:
+			for i in self.df.index:
+				# print('caption create')
+				caption, link, fname = self.create_caption(self.df.iloc[i])
+				# print(caption)
+				#download the pdf
+				fpath = self.pdf_downloader(link)
+				# print('Downloaded')
+				#send the pdf + add thumb
+				cid = os.environ.get('TG_CHANNEL_ID')
+				# print(cid, type(cid))
+				self.app.send_document(chat_id=int(cid), document=fpath, thumb='thumb.jpg',
+				file_name='@WBHealthU - '+fname+'.pdf', caption=caption, parse_mode='markdown')
+				# await self.app.send_message(chat_id=int(cid), text=caption)
+				os.remove(fpath)
+				print(i, '/', self.df.shape[0])
+				time.sleep(5)

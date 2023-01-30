@@ -17,7 +17,6 @@ for k in url_dict.keys():
 	# print(df_processed)
 	if not df_processed.empty:
 		print(df_processed.shape[0])
-		TgSend = sender.tgsend(df_processed, df_type=k)
-		asyncio.run(TgSend.main())
+		sender.tgsend(df_processed, df_type=k).main()
 	else:
 		print(k, 'No updates today')
