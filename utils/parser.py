@@ -1,16 +1,17 @@
 from bs4 import BeautifulSoup as bs
 import requests, time, re
 import pandas as pd
+import numpy as np
 from datetime import date
 
 class Parser:
 	''''Parser object and functions'''
-	def __init__(self, urls_list):
+	def __init__(self, main_url):
 		'''Creates session with a user-agent'''
 		self.sess = requests.Session()
 		UA = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'}
 		self.sess.headers.update(UA)
-		self.urls_list = urls_list
+		self.url = main_url
 
 	def get_page(self, url):
 		'''Fetches the url page using session'''
@@ -71,27 +72,26 @@ class Parser:
 		self.df = df1
 		
 
-
 	def main(self):
 		'''Serialize them return dataframe'''
-		for each in self.urls_list:
-			# self.url=each
-			resp = self.get_page(each)
-			if not resp==None:
-				self.page_souper()
-				self.table_parse()
-				return self.df
+		# self.url=each
+		resp = self.get_page(self.url)
+		if not resp==None:
+			self.page_souper()
+			self.table_parse()
+			return self.df
 
 class OptionalParser:
 	'''Parser according to URL'''
-	def __init__(self, urlno, df) -> None:
-		self.urltype = urlno
+	def __init__(self, urltype, df) -> None:
+		self.urltype = urltype
 		self.df = df
 	
 	def date_present(self):
 		df = self.df
 		df['Date']=pd.to_datetime(df['Date'], format='%d/%m/%Y')
-		df['is_today'] = df['Date'] == date.today()
+		df['is_today'] = df['Date'] == np.datetime64(date.today())
+		# print(df.columns)
 		self.newdf = df.query('is_today == True')
 	
 	def main(self):
