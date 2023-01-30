@@ -131,3 +131,5 @@ dmypy.json
 #manual
 test*
 utils/kriti_bot.session
+kriti_bot.session
+kriti_bot.session-journal
