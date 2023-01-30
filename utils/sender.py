@@ -7,8 +7,9 @@ class tgsend:
 	'''Send via tg to the channel'''
 	def __init__(self, dataframe, df_type) -> None:
 		'''Create Pyrogram app'''
+		str_api = os.environ.get('TG_API_ID')
 		self.app = Client("kriti_bot", 
-			api_id=os.environ.get('TG_API_ID'), 
+			api_id=int(str_api), 
 			api_hash=os.environ.get('TG_API_HASH'),
 			bot_token = os.environ.get('TG_BOT_TOKEN'))
 		self.tg_channel_id = os.environ.get('TG_CHANNEL_ID')
