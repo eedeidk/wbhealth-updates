@@ -1,5 +1,5 @@
 from pyrogram import Client
-import os, io, tempfile
+import os, io, tempfile, time
 from requests import get
 
 ## the telegram app
@@ -47,17 +47,18 @@ class tgsend:
 		'''Main message sender'''
 		await self.app.start()
 		for i in self.df.index:
-			print('caption create')
+			# print('caption create')
 			caption, link, fname = self.create_caption(self.df.iloc[i])
-			print(caption)
+			# print(caption)
 			#download the pdf
 			fpath = self.pdf_downloader(link)
-			print('Downloaded')
+			# print('Downloaded')
 			#send the pdf + add thumb
 			cid = os.environ.get('TG_CHANNEL_ID')
-			print(cid, type(cid))
+			# print(cid, type(cid))
 			await self.app.send_document(chat_id=int(cid), document=fpath, file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
 			# await self.app.send_message(chat_id=int(cid), text=caption)
 			os.remove(fpath)
 			print(i, '/', self.df.shape[0])
+			time.sleep(5)
 		await self.app.stop()
