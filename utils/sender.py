@@ -1,5 +1,5 @@
 from pyrogram import Client
-import os, io
+import os, io, tempfile
 from requests import get
 
 ## the telegram app
@@ -36,20 +36,28 @@ class tgsend:
 		
 	def pdf_downloader(self, link):
 		'''Downloads the PDF'''
-		fileobj = get(link, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'}).content
-		# Create BytesIO object
-		fobj = io.BytesIO(fileobj)
-		return fobj
+		response = get(link, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'})
+		with tempfile.NamedTemporaryFile(delete=False) as f:
+			f.write(response.content)
+			f.seek(0)
+			return f.name
+		
 
 	async def main(self):
 		'''Main message sender'''
 		await self.app.start()
 		for i in self.df.index:
+			print('caption create')
 			caption, link, fname = self.create_caption(self.df.iloc[i])
+			print(caption)
 			#download the pdf
-			fobj = self.pdf_downloader(link)
+			fpath = self.pdf_downloader(link)
+			print('Downloaded')
 			#send the pdf + add thumb
-			await self.app.send_document(chat_id=os.environ.get('TG_CHANNEL_ID') ,document=fobj,
-			file_name='@WBHealthU - '+fname+'.pdf', caption=caption, parse_mode='MARKDOWN')
+			cid = os.environ.get('TG_CHANNEL_ID')
+			print(cid, type(cid))
+			await self.app.send_document(chat_id=int(cid), document=fpath, file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
+			# await self.app.send_message(chat_id=int(cid), text=caption)
+			os.remove(fpath)
 			print(i, '/', self.df.shape[0])
 		await self.app.stop()
