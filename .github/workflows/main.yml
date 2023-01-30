@@ -8,13 +8,13 @@ jobs:
   run_app:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Get secret
-      run: |
-        echo "TG_API_HASH: ${{ secrets.TG_API_HASH }}"
-        echo "TG_API_ID: ${{ secrets.TG_API_ID }}"
-        echo "TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}"
-        echo "TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}"
+    # steps:
+    # - name: Get secret
+    #   run: |
+    #     echo "TG_API_HASH: ${{ secrets.TG_API_HASH }}"
+    #     echo "TG_API_ID: ${{ secrets.TG_API_ID }}"
+    #     echo "TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}"
+    #     echo "TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}"
     
     - name: Checkout code
       uses: actions/checkout@v2
