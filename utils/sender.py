@@ -26,8 +26,8 @@ class tgsend:
 			# 'Title', 'Category', 'Branch'
 			caption = x['Title']
 			caption += f''' [Source]({x['Link']}) '''
-			caption += f" #{x['Category']}"
-			caption += f" #{x['Branch']}"
+			caption += f" #{x['Category'].replace(' ', '_')}"
+			caption += f" #{x['Branch'].replace(' ', '_')}"
 			caption += f' #GO **@WBHealthU**'
 		elif self.dftype == 'career':
 			# Not ready yet
