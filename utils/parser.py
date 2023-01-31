@@ -90,8 +90,8 @@ class OptionalParser:
 	def date_present(self):
 		df = self.df
 		df['Date']=pd.to_datetime(df['Date'], format='%d/%m/%Y')
-		df['is_today'] = df['Date'] == np.datetime64(date.today())
-		# df['is_today'] = df['Date'] == np.datetime64(date(2023,1,30))
+		# df['is_today'] = df['Date'] == np.datetime64(date.today())
+		df['is_today'] = df['Date'] == np.datetime64(date(2023,1,30))
 		# print(df.columns)
 		self.newdf = df.query('is_today == True')
 	
