@@ -1,5 +1,5 @@
 from pyrogram import Client
-import os, io, tempfile, time
+import os, io, time
 from requests import get
 
 ## the telegram app
@@ -34,20 +34,6 @@ class tgsend:
 			caption += f' #Recruitment **@WBHealthU**'
 		return caption, x['Link'], x['Title']
 		
-	def pdf_downloader(self, link):
-		'''Downloads the PDF'''
-		r = get(link, stream=True,
-			headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'})
-		f = tempfile.NamedTemporaryFile(delete=False)
-		f.write(r.content)
-		f.seek(0)
-		return f.name
-		# with open('tempxyz.file', 'wb') as f:
-		# 	for chunk in r.iter_content(chunk_size=8192): 
-		# 		# If you have chunk encoded response uncomment if
-		# 		# and set chunk_size parameter to None.
-		# 		#if chunk: 
-		# 		f.write(chunk)
 
 	def main(self):
 		'''Main message sender'''
@@ -55,14 +41,13 @@ class tgsend:
 			for i in self.df.index:
 				# print('caption create')
 				caption, link, fname = self.create_caption(self.df.iloc[i])
-				# print(caption)
 				#download the pdf
-				fpath = self.pdf_downloader(link)
-				# print('Downloaded')
+				r = get(link, stream=True,
+				headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'})
+				fblob = io.BytesIO(r.content)
 				#send the pdf + add thumb
-				self.app.send_document(chat_id=int(self.tg_channel_id), document=fpath, thumb='thumb.jpg',
+				self.app.send_document(chat_id=int(self.tg_channel_id), document=fblob, thumb='thumb.jpg',
 				file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
-				# await self.app.send_message(chat_id=int(cid), text=caption)
-				os.remove(fpath)
+
 				print(i+1, '/', self.df.shape[0])
 				time.sleep(2)
