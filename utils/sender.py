@@ -38,10 +38,10 @@ class tgsend:
 		'''Downloads the PDF'''
 		r = get(link, stream=True,
 			headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'})
-		with tempfile.NamedTemporaryFile(delete=False) as f:
-			f.write(r.content)
-			f.seek(0)
-			return f.name
+		f = tempfile.NamedTemporaryFile(delete=False)
+		f.write(r.content)
+		f.seek(0)
+		return f.name
 		# with open('tempxyz.file', 'wb') as f:
 		# 	for chunk in r.iter_content(chunk_size=8192): 
 		# 		# If you have chunk encoded response uncomment if
