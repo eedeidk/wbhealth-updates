@@ -1,4 +1,3 @@
-import os, asyncio
 urls = ['https://www.wbhealth.gov.in/pages/notice', 'https://www.wbhealth.gov.in/pages/career']
 
 url_dict ={
@@ -16,7 +15,7 @@ for k in url_dict.keys():
 	df_processed = parser.OptionalParser(k, df_main).main()
 	# print(df_processed)
 	if not df_processed.empty:
-		print(df_processed.shape[0])
+		print(df_processed.shape[0], 'updates on',k)
 		sender.tgsend(df_processed, df_type=k).main()
 	else:
-		print(k, 'No updates today')
+		print('No updates today',k)
