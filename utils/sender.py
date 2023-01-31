@@ -60,9 +60,7 @@ class tgsend:
 				fpath = self.pdf_downloader(link)
 				# print('Downloaded')
 				#send the pdf + add thumb
-				cid = os.environ.get('TG_CHANNEL_ID')
-				# print(cid, type(cid))
-				self.app.send_document(chat_id=int(cid), document=fpath, thumb='thumb.jpg',
+				self.app.send_document(chat_id=int(self.tg_channel_id), document=fpath, thumb='thumb.jpg',
 				file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
 				# await self.app.send_message(chat_id=int(cid), text=caption)
 				os.remove(fpath)
