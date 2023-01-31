@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get ENV Secrets
-      run: |
-        echo "TG_API_HASH: ${{ secrets.TG_API_HASH }}"
-        echo "TG_API_ID: ${{ secrets.TG_API_ID }}"
-        echo "TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}"
-        echo "TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}"
+    # - name: Get ENV Secrets
+    #   run: |
+    #     echo "TG_API_HASH: ${{ secrets.TG_API_HASH }}"
+    #     echo "TG_API_ID: ${{ secrets.TG_API_ID }}"
+    #     echo "TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}"
+    #     echo "TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}"
     
     - name: Checkout code
       uses: actions/checkout@v2
@@ -29,4 +29,9 @@ jobs:
         pip install -r requirements.txt
         
     - name: Run Python app
-      run: python main.py
+        env:
+          TG_API_HASH: ${{ secrets.TG_API_HASH }}
+          TG_API_ID: ${{ secrets.TG_API_ID }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}
+        run: python main.py
