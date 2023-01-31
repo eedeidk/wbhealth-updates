@@ -51,23 +51,20 @@ class tgsend:
 
 	def main(self):
 		'''Main message sender'''
-		self.app.start()
-		# s = self.app.export_session_string()
-		# print(s)
-		for i in self.df.index:
-			# print('caption create')
-			caption, link, fname = self.create_caption(self.df.iloc[i])
-			# print(caption)
-			#download the pdf
-			fpath = self.pdf_downloader(link)
-			# print('Downloaded')
-			#send the pdf + add thumb
-			cid = os.environ.get('TG_CHANNEL_ID')
-			# print(cid, type(cid))
-			self.app.send_document(chat_id=int(cid), document=fpath, thumb='thumb.jpg',
-			file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
-			# await self.app.send_message(chat_id=int(cid), text=caption)
-			os.remove(fpath)
-			print(i, '/', self.df.shape[0])
-			time.sleep(5)
-		self.app.stop()
+		with self.app:
+			for i in self.df.index:
+				# print('caption create')
+				caption, link, fname = self.create_caption(self.df.iloc[i])
+				# print(caption)
+				#download the pdf
+				fpath = self.pdf_downloader(link)
+				# print('Downloaded')
+				#send the pdf + add thumb
+				cid = os.environ.get('TG_CHANNEL_ID')
+				# print(cid, type(cid))
+				self.app.send_document(chat_id=int(cid), document=fpath, thumb='thumb.jpg',
+				file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
+				# await self.app.send_message(chat_id=int(cid), text=caption)
+				os.remove(fpath)
+				print(i, '/', self.df.shape[0])
+				time.sleep(2)
