@@ -64,5 +64,5 @@ class tgsend:
 				file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
 				# await self.app.send_message(chat_id=int(cid), text=caption)
 				os.remove(fpath)
-				print(i, '/', self.df.shape[0])
+				print(i+1, '/', self.df.shape[0])
 				time.sleep(2)
