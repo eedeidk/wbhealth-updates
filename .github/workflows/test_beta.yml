@@ -47,4 +47,4 @@ jobs:
 
     - name: Push changes to the same branch
       run: |
-        git push ${{ github.ref_name }}
+        git push
