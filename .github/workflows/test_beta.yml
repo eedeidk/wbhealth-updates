@@ -34,7 +34,7 @@ jobs:
     - name: Add log files to repo
       run: |
         echo "Adding logs to Git..."
-        git add logs/*
+        git add logs
 
     - name: Commit changes
       run: |
