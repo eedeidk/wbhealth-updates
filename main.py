@@ -15,7 +15,7 @@ for k in url_dict.keys():
 	df_processed = parser.OptionalParser(k, df_main).main()
 	# print(df_processed)
 	if not df_processed.empty:
-		print(df_processed.shape[0], 'updates on',k)
+		print(df_processed.shape[0], 'updates on #',k)
 		sender.tgsend(df_processed, df_type=k).main()
 	else:
-		print('No updates today',k)
+		print('No updates today on #',k)

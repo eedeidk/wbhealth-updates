@@ -9,12 +9,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # - name: Get ENV Secrets
-    #   run: |
-    #     echo "TG_API_HASH: ${{ secrets.TG_API_HASH }}"
-    #     echo "TG_API_ID: ${{ secrets.TG_API_ID }}"
-    #     echo "TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}"
-    #     echo "TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}"
     
     - name: Checkout code
       uses: actions/checkout@v2
@@ -36,3 +30,18 @@ jobs:
         TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}
       run: |
         python main.py
+    
+    - name: Add log files to repo
+      run: |
+        echo "Adding logs to Git..."
+        git add logs/*
+
+    - name: Commit changes
+      run: |
+        echo "Committing changes to Git..."
+        git -c "user.name=GitHub Actions" -c "user.email=actions@github.com" commit -m "Log time script was run"
+
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.7.0
+      with:
+        github_token: ${{ secrets.WB_UPDATE }}

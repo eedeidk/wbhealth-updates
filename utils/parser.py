@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as bs
-import requests, time, re
+import requests, time, os
 import pandas as pd
 import numpy as np
 from datetime import date
@@ -87,14 +87,37 @@ class OptionalParser:
 		self.urltype = urltype
 		self.df = df
 	
-	def date_present(self):
-		df = self.df
-		df['Date']=pd.to_datetime(df['Date'], format='%d/%m/%Y')
-		df['is_today'] = df['Date'] == np.datetime64(date.today())
-		# df['is_today'] = df['Date'] == np.datetime64(date(2023,1,30))
-		# print(df.columns)
-		self.newdf = df.query('is_today == True')
+	def compare_dfs(self):
+		'''Compares previous dataframe with newer for unique
+		and later entries. checks 'Date' column'''
+		# Read New DF
+		newdf = self.df
+		newdf['Date']=pd.to_datetime(newdf['Date'], format='%d/%m/%Y')
+		print('New Dataframe',newdf)
+		## Test RUN logic JUst in Case df.query('istoday) changed
+		# newdf = newdf.loc[(newdf.Date == np.datetime64(date(2023,2,1)))]
+		# Read Previous Dataframe
+		if os.path.exists(f'logs/logged-{self.urltype}.json'):
+			# read the df: df2 is old
+			df2 = pd.read_json(f'logs/logged-{self.urltype}.json')
+			# get last date
+			# minimum date might help for the career page
+			latest_date = df2.Date.min()
+			## Compare them
+			dfC = newdf.loc[(~newdf.Link.isin(df2.Link)) & (newdf.Date >= latest_date)]
+			dfC=dfC.reset_index(drop=True)
+			print(dfC)
+			## then save the newer df if not empty
+			if not dfC.dropna().empty:
+				dfC.to_json(f'logs/logged-{self.urltype}.json')
+			# not done
+			return dfC
+
+		else:
+			newdf.to_json(f'logs/logged-{self.urltype}.json')
+			return newdf
+
 	
 	def main(self):
-		self.date_present()
-		return self.newdf
+		com_df=self.compare_dfs()
+		return com_df
