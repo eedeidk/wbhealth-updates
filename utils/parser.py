@@ -87,21 +87,15 @@ class OptionalParser:
 		self.urltype = urltype
 		self.df = df
 	
-	def date_present(self):
-		df = self.df
-		df['Date']=pd.to_datetime(df['Date'], format='%d/%m/%Y')
-		# df['is_today'] = df['Date'] == np.datetime64(date.today())
-		# df['is_today'] = df['Date'] == np.datetime64(date(2023,1,30))
-		# print(df.columns)
-		# self.newdf = df.query('is_today == True')
-		self.newdf = df
-	
 	def compare_dfs(self):
 		'''Compares previous dataframe with newer for unique
-		and later entries.'''
-		# Recent dfs
-		newdf= self.newdf
+		and later entries. checks 'Date' column'''
+		# Read New DF
+		newdf = self.df
+		newdf['Date']=pd.to_datetime(newdf['Date'], format='%d/%m/%Y')
 		print('New Dataframe',newdf)
+		## Test RUN logic JUst in Case df.query('istoday) changed
+		# newdf = newdf.loc[(newdf.Date == np.datetime64(date(2023,1,30)))]
 		# Read Previous Dataframe
 		if os.path.exists(f'logs/logged-{self.urltype}.json'):
 			# read the df: df2 is old
@@ -122,6 +116,5 @@ class OptionalParser:
 
 	
 	def main(self):
-		self.date_present()
 		com_df=self.compare_dfs()
 		return com_df
