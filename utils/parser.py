@@ -95,7 +95,7 @@ class OptionalParser:
 		newdf['Date']=pd.to_datetime(newdf['Date'], format='%d/%m/%Y')
 		print('New Dataframe',newdf)
 		## Test RUN logic JUst in Case df.query('istoday) changed
-		# newdf = newdf.loc[(newdf.Date == np.datetime64(date(2023,2,1)))]
+		# newdf = newdf.loc[(newdf.Date == np.datetime64(date(2023,1,31)))]
 		# Read Previous Dataframe
 		if os.path.exists(f'logs/logged-{self.urltype}.json'):
 			# read the df: df2 is old
