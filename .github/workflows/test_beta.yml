@@ -43,7 +43,7 @@ jobs:
         echo "Committing changes to Git..."
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git commit -m "Log time script was run"
+        git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
 
     - name: Push changes to the same branch
       run: |
