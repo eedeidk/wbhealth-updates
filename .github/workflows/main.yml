@@ -11,10 +11,12 @@ jobs:
     steps:
     
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.WB_UPDATE }}
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.10.4
 
@@ -34,14 +36,15 @@ jobs:
     - name: Add log files to repo
       run: |
         echo "Adding logs to Git..."
-        git add logs/*
+        git add logs
 
     - name: Commit changes
       run: |
         echo "Committing changes to Git..."
-        git -c "user.name=GitHub Actions" -c "user.email=actions@github.com" commit -m "Log time script was run"
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
 
-    - name: Push changes
-      uses: ad-m/github-push-action@v0.7.0
-      with:
-        github_token: ${{ secrets.WB_UPDATE }}
+    - name: Push changes to the same branch
+      run: |
+        git push
