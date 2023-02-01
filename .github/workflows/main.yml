@@ -1,4 +1,4 @@
-name: Run Test Scrapper
+name: Run Daily Scrapper
 on:
   schedule:
     - cron:  "20 15 * * *"
