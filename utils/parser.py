@@ -95,7 +95,7 @@ class OptionalParser:
 		newdf['Date']=pd.to_datetime(newdf['Date'], format='%d/%m/%Y')
 		print('New Dataframe',newdf)
 		## Test RUN logic JUst in Case df.query('istoday) changed
-		newdf = newdf.loc[(newdf.Date == np.datetime64(date(2023,1,30)))]
+		newdf = newdf.loc[(newdf.Date == np.datetime64(date(2023,2,1)))]
 		# Read Previous Dataframe
 		if os.path.exists(f'logs/logged-{self.urltype}.json'):
 			# read the df: df2 is old
@@ -105,8 +105,11 @@ class OptionalParser:
 			latest_date = df2.Date.min()
 			## Compare them
 			dfC = newdf.loc[(~newdf.Link.isin(df2.Link)) & (newdf.Date >= latest_date)]
-			## then save the newer df
-			dfC.to_json(f'logs/logged-{self.urltype}.json')
+			dfC=dfC.reset_index(drop=True)
+			print(dfC)
+			## then save the newer df if not empty
+			if not dfC.dropna().empty:
+				dfC.to_json(f'logs/logged-{self.urltype}.json')
 			# not done
 			return dfC
 
