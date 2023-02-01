@@ -11,10 +11,12 @@ jobs:
     steps:
     
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.WB_UPDATE }}
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.10.4
 
@@ -39,12 +41,10 @@ jobs:
     - name: Commit changes
       run: |
         echo "Committing changes to Git..."
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
+        git config user.name github-actions
+        git config user.email github-actions@github.com
         git commit -m "Log time script was run"
 
     - name: Push changes to the same branch
-      uses: ad-m/github-push-action@v0.6.0
-      with:
-        github_token: ${{ secrets.WB_UPDATE }}
-        branch: ${{ github.ref }}
+      run: |
+        git push ${{ github.ref_name }}
