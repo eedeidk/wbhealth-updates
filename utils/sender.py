@@ -21,18 +21,24 @@ class tgsend:
 		if self.dftype == 'notice':
 			caption = x['Description']
 			caption += f''' [Source]({x['Link']}) '''
-			caption += f' #Notice **@WBHealthU**'
+			caption += f' **#Notice @WBHealthU**'
+			title = x['Title']
 		elif self.dftype == 'go':
 			# 'Title', 'Category', 'Branch'
 			caption = x['Title']
 			caption += f''' [Source]({x['Link']}) '''
 			caption += f" #{x['Category'].replace(' ', '_')}"
 			caption += f" #{x['Branch'].replace(' ', '_')}"
-			caption += f' #GO **@WBHealthU**'
-		elif self.dftype == 'career':
-			# Not ready yet
-			caption += f' #Recruitment **@WBHealthU**'
-		return caption, x['Link'], x['Title']
+			caption += f' **#GO @WBHealthU**'
+			title = x['Title']
+		elif self.dftype == 'employment':
+			# Subject	Details	Date	End Date Link
+			caption = x['Details']
+			caption += f''' [Source]({x['Link']}) '''
+			caption += f''' upto {x['End Date']} '''
+			caption += f' **#Recruitment @WBHealthU**'
+			title = x['Subject']
+		return caption, x['Link'], title
 		
 
 	def main(self):
