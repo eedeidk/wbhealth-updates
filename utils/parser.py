@@ -100,7 +100,7 @@ class OptionalParser:
 		print('New Dataframe',newdf)
 		## Test RUN logic JUst in Case df.query('istoday) changed
 		## Stores upto the specified date
-		newdf = newdf.loc[(newdf.Date <= np.datetime64(date(2023,2,6)))]
+		# newdf = newdf.loc[(newdf.Date <= np.datetime64(date(2023,2,6)))]
 		# Read Previous Dataframe
 		if os.path.exists(f'logs/logged-{self.urltype}.json'):
 			# read the df: df2 is old
