@@ -1,8 +1,7 @@
-urls = ['https://www.wbhealth.gov.in/pages/notice', 'https://www.wbhealth.gov.in/pages/career']
-
 url_dict ={
 	'notice': 'https://www.wbhealth.gov.in/pages/notice',
-	'go':'https://www.wbhealth.gov.in/pages/gov_order'
+	'go':'https://www.wbhealth.gov.in/pages/gov_order',
+	'employment' : 'https://www.wbhealth.gov.in/pages/career'
 	}
 
 from utils import parser, sender
