@@ -92,10 +92,15 @@ class OptionalParser:
 		and later entries. checks 'Date' column'''
 		# Read New DF
 		newdf = self.df
+		# Rename column only if career page:
+		if self.urltype=='employment':
+			newdf.rename(columns={'Start Date': 'Date'}, inplace=True)
+
 		newdf['Date']=pd.to_datetime(newdf['Date'], format='%d/%m/%Y')
 		print('New Dataframe',newdf)
 		## Test RUN logic JUst in Case df.query('istoday) changed
-		# newdf = newdf.loc[(newdf.Date == np.datetime64(date(2023,1,31)))]
+		## Stores upto the specified date
+		newdf = newdf.loc[(newdf.Date <= np.datetime64(date(2023,2,6)))]
 		# Read Previous Dataframe
 		if os.path.exists(f'logs/logged-{self.urltype}.json'):
 			# read the df: df2 is old
@@ -115,6 +120,7 @@ class OptionalParser:
 
 		else:
 			newdf.to_json(f'logs/logged-{self.urltype}.json')
+			newdf=newdf.reset_index(drop=True)
 			return newdf
 
 	
