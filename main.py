@@ -1,6 +1,6 @@
 url_dict ={
-	'notice': 'https://www.wbhealth.gov.in/pages/notice',
-	'go':'https://www.wbhealth.gov.in/pages/gov_order',
+	# 'notice': 'https://www.wbhealth.gov.in/pages/notice',
+	# 'go':'https://www.wbhealth.gov.in/pages/gov_order',
 	'employment' : 'https://www.wbhealth.gov.in/pages/career'
 	}
 
