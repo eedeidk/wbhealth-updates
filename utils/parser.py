@@ -97,21 +97,26 @@ class OptionalParser:
 			newdf.rename(columns={'Start Date': 'Date'}, inplace=True)
 
 		newdf['Date']=pd.to_datetime(newdf['Date'], format='%d/%m/%Y')
-		print('New Dataframe',newdf)
+		newdf.sort_values(by='Date')
+		print('New Dataframe',newdf, sep='\n')
 		## Test RUN logic JUst in Case df.query('istoday) changed
 		## Stores upto the specified date
-		# newdf = newdf.loc[(newdf.Date <= np.datetime64(date(2023,2,6)))]
+		# newdf = newdf.loc[(newdf.Date <= np.datetime64(date(2023,2,9)))]
 		# Read Previous Dataframe
 		if os.path.exists(f'logs/logged-{self.urltype}.json'):
 			# read the df: df2 is old
 			df2 = pd.read_json(f'logs/logged-{self.urltype}.json')
+			df2.sort_values(by='Date')
 			# get last date
 			# minimum date might help for the career page
 			latest_date = df2.Date.min()
 			## Compare them
-			dfC = newdf.loc[(~newdf.Link.isin(df2.Link)) & (newdf.Date >= latest_date)]
+			dfC = newdf[(newdf['Date']>=latest_date) &
+			(~newdf['Link'].isin(df2['Link']))]
+			# dfC = df1[~newdf['Link'].isin(df1['Link'])]
+			# dfC = newdf.loc[(~newdf.Link.isin(df2.Link)) & (newdf.Date >= latest_date)]
 			dfC=dfC.reset_index(drop=True)
-			print(dfC)
+			print('difference',dfC)
 			## then save the newer df if not empty
 			if not dfC.dropna().empty:
 				dfC.to_json(f'logs/logged-{self.urltype}.json')
