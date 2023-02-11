@@ -109,7 +109,7 @@ class OptionalParser:
 			df2.sort_values(by='Date')
 			# get last date
 			# minimum date might help for the career page
-			latest_date = df2.Date.min()
+			latest_date = df2.Date.max()
 			## Compare them
 			dfC = newdf[(newdf['Date']>=latest_date) &
 			(~newdf['Link'].isin(df2['Link']))]
