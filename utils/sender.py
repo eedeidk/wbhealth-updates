@@ -19,13 +19,13 @@ class tgsend:
 		'''Creates caption from single df iloc'''
 		x=dfiloc
 		if self.dftype == 'notice':
-			caption = x['Description']
+			caption = f"❇ {x['Description']}\n"
 			caption += f''' [Source]({x['Link']}) '''
 			caption += f' **#Notice @WBHealthU**'
 			title = x['Title']
 		elif self.dftype == 'go':
 			# 'Title', 'Category', 'Branch'
-			caption = x['Title']
+			caption = f"📌 {x['Title']}\n"
 			caption += f''' [Source]({x['Link']}) '''
 			caption += f" #{x['Category'].replace(' ', '_')}"
 			caption += f" #{x['Branch'].replace(' ', '_')}"
@@ -33,7 +33,7 @@ class tgsend:
 			title = x['Title']
 		elif self.dftype == 'employment':
 			# Subject	Details	Date	End Date Link
-			caption = x['Details']
+			caption = f"🗞 {x['Details']}\n"
 			caption += f''' [Source]({x['Link']}) '''
 			caption += f''' upto {x['End Date']} '''
 			caption += f' **#Recruitment @WBHealthU**'
