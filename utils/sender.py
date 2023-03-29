@@ -39,6 +39,25 @@ class tgsend:
 			caption += f' **#Recruitment @WBHealthU**'
 			title = x['Subject']
 		return caption, x['Link'], title
+	
+	def getfile(self, url):
+		self.header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'}
+		try:
+			r = get(url=url, stream=True, headers=self.header)
+			self.fblob = io.BytesIO(r.content)
+		except Exception as e:
+			print(f'Exception Raised {e}')
+			retry_count = 0
+			max_retries = 2  # number of retries
+			while retry_count < max_retries:
+				try:
+					r = get(url=url, stream=True, headers=self.header)
+					self.fblob = io.BytesIO(r.content)
+				except Exception as e:
+					print("Exception on Retry: {0}".format(e))
+					retry_count = retry_count + 1
+					time.sleep(3)
+			raise ValueError('No idea')
 		
 
 	def main(self):
@@ -48,12 +67,13 @@ class tgsend:
 				# print('caption create')
 				caption, link, fname = self.create_caption(self.df.iloc[i])
 				#download the pdf
-				r = get(link, stream=True,
-				headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'})
-				fblob = io.BytesIO(r.content)
-				#send the pdf + add thumb
-				self.app.send_document(chat_id=int(self.tg_channel_id), document=fblob, thumb='thumb.jpg',
-				file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
+				try:
+					self.getfile(link)
+					#send the pdf + add thumb
+					self.app.send_document(chat_id=int(self.tg_channel_id), document=self.fblob, thumb='thumb.jpg',
+					file_name='@WBHealthU - '+fname+'.pdf', caption=caption)
 
-				print(i+1, '/', self.df.shape[0])
-				time.sleep(2)
+					print(i+1, '/', self.df.shape[0])
+					time.sleep(2)
+				except ValueError as e:
+					print(f'{e} about: {link}')
