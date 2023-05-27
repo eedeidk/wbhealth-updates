@@ -24,6 +24,7 @@ jobs:
       run: |
         pip install poetry
         poetry --version
+        cd $GITHUB_WORKSPACE
         poetry install
         
     - name: Run Python app
