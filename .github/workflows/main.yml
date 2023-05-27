@@ -18,11 +18,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.10.4
+        python-version: 3.10.6
 
-    - name: Install dependencies
+    - name: Setup Poetry
+      run: pip install poetry
+      
+    - name: Run Poetry install deps
       run: |
-        pip install -r requirements.txt
+        poetry --version
+        cd $GITHUB_WORKSPACE
+        poetry install --no-root
         
     - name: Run Python app
       env:
@@ -31,20 +36,26 @@ jobs:
         TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
         TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_ID }}
       run: |
-        python main.py
+        poetry run python main.py
     
     - name: Add log files to repo
       run: |
         echo "Adding logs to Git..."
         git add logs
 
+    - name: Check for changes
+      id: check_changes
+      run: |
+        git diff-index --quiet HEAD || echo "::set-output name=changes::true"
+
     - name: Commit changes
       run: |
-        echo "Committing changes to Git..."
+        echo "Checking changes to Git..."
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
-
-    - name: Push changes to the same branch
-      run: |
-        git push
+        if [[ ${{ steps.check_changes.outputs.changes }} == "true" ]]; then
+          echo "Changes registered commit & push"
+          git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
+          git push
+        else
+          echo "No changes to commit."
