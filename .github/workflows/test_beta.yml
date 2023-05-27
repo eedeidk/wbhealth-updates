@@ -14,7 +14,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.WB_UPDATE }}
-        repository: eedeidk/wbhealth-updates
 
     - name: Set up Python
       uses: actions/setup-python@v4
