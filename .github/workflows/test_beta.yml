@@ -20,9 +20,11 @@ jobs:
       with:
         python-version: 3.10.6
 
-    - name: Install dependencies
+    - name: Prepare env and install dependencies
       run: |
-        pip install -r requirements.txt
+        pip install poetry
+        poetry --version
+        poetry install
         
     - name: Run Python app
       env:
@@ -31,6 +33,7 @@ jobs:
         TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
         TG_CHANNEL_ID: ${{ secrets.TG_CHANNEL_PRI_ID }}
       run: |
+        poetry shell
         python main.py
     
     - name: Add log files to repo
