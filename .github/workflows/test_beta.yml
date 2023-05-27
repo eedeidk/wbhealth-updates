@@ -46,16 +46,14 @@ jobs:
     - name: Check for changes
       id: check_changes
       run: |
-        git diff-index --quiet HEAD || echo "::set-output name=changes::true"
+        git diff-index --quiet HEAD || echo "changes=true" >> $GITHUB_OUTPUT
 
     - name: Commit changes
+      if: steps.check_changes.outputs.changes == 'true'
       run: |
         echo "Checking changes to Git..."
         git config user.name github-actions
         git config user.email github-actions@github.com
-        if [[ ${{ steps.check_changes.outputs.changes }} == "true" ]]; then
-          echo "Changes registered commit & push"
-          git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
-          git push
-        else
-          echo "No changes to commit."
+        echo "Changes registered commit & push"
+        git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
+        git push
