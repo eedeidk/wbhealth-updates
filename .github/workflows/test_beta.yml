@@ -18,7 +18,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.10.4
+        python-version: 3.10.6
 
     - name: Install dependencies
       run: |
@@ -38,13 +38,19 @@ jobs:
         echo "Adding logs to Git..."
         git add logs
 
+    - name: Check for changes
+      id: check_changes
+      run: |
+        git diff-index --quiet HEAD || echo "::set-output name=changes::true"
+
     - name: Commit changes
       run: |
-        echo "Committing changes to Git..."
+        echo "Checking changes to Git..."
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
-
-    - name: Push changes to the same branch
-      run: |
-        git push
+        if [[ ${{ steps.check_changes.outputs.changes }} == "true" ]]; then
+          echo "Changes registered commit & push"
+          git commit -m "Log update `date +'%d-%m-%Y %H:%M:%S'`"
+          git push
+        else
+          echo "No changes to commit."
