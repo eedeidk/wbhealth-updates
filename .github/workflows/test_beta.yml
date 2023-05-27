@@ -20,13 +20,15 @@ jobs:
       with:
         python-version: 3.10.6
 
-    - name: Prepare env and install dependencies
+    - name: Setup Poetry
+      uses: Gr1N/setup-poetry@v8
+      
+    - name: Run Poetry  
       run: |
-        pip install poetry
         poetry --version
         cd $GITHUB_WORKSPACE
         poetry install
-        
+          
     - name: Run Python app
       env:
         TG_API_HASH: ${{ secrets.TG_API_HASH }}
