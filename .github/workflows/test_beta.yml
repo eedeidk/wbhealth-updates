@@ -27,7 +27,7 @@ jobs:
       run: |
         poetry --version
         cd $GITHUB_WORKSPACE
-        poetry install
+        poetry install --no-root
           
     - name: Run Python app
       env:
