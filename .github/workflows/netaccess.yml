@@ -1,0 +1,24 @@
+name: Test Network Access
+on:
+  workflow_dispatch:
+
+jobs:
+  test_network_access:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Test Network Access
+      run: |
+        # Replace 'https://example.com' with the URL you want to test
+        response=$(curl -s https://google.com)
+        
+        # Check if the request was successful (HTTP status code 200)
+        if [ $? -eq 0 ]; then
+          echo "Network access successful! Response:"
+          echo "$response"
+        else
+          echo "Failed to access the network."
+        fi
