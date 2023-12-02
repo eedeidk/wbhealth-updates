@@ -15,7 +15,6 @@ jobs:
       with:
         python-version: |
           3.6.7
-          # 3.11.6
     
     - name: Setup Proxy
       run: |
