@@ -14,17 +14,17 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: |
-        3.6
-        3.11
+          3.6
+          3.11
     
     - name: Setup Proxy
       run: |
-      pip install proxybroker
-      proxybroker serve --host 127.0.0.1 --port 8888 --types HTTP HTTPS --lvl High --countries IN
+        pip install proxybroker
+        proxybroker serve --host 127.0.0.1 --port 8888 --types HTTP HTTPS --lvl High --countries IN
     
     - name: Setup env proxy
       run: |
-      export HTTP_PROXY="http://127.0.0.1:8080"; export HTTPS_PROXY="http://127.0.0.1:8080"
+        export HTTP_PROXY="http://127.0.0.1:8080"; export HTTPS_PROXY="http://127.0.0.1:8080"
 
     - name: Test Network Access
       run: |
