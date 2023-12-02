@@ -21,6 +21,7 @@ class Parser:
 		if self.response.status_code == 200:
 			return self.response
 		else:
+			print("Could not connect.. retrying")
 			i=i+1
 			time.sleep(4)
 			if not i>3:
