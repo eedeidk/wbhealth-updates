@@ -9,7 +9,8 @@ class Parser:
 	def __init__(self, main_url):
 		'''Creates session with a user-agent'''
 		self.sess = requests.Session()
-		UA = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; rv:106.0) Gecko/20100101 Firefox/106.0'}
+		self.sess.verify = False
+		UA = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'}
 		self.sess.headers.update(UA)
 		self.url = main_url
 
